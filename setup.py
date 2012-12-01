@@ -17,7 +17,7 @@ setup(
     description='Generic restful api -> Python function call adaptor',
     long_description=open('README.md').read(),
     author='Albert O\'Connor',
-    author_email='amjoconn@gmail.com',
+    author_email='info@albertoconnor.ca',
     url='https://bitbucket.org/amjoconn/shad',
     packages=packages,
     package_data={'': ['LICENSE', 'NOTICE']},

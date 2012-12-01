@@ -33,6 +33,13 @@ class BaseAPI(object):
         unwraped like a data or d key deferenced.
         """
         return data
+    
+    def _process_content(self, data):
+        """
+        data is basically text, what even is returned by requests
+        response.content. This is chance to munge it.
+        """
+        return data
 
     @classmethod
     def _register(cls, api_call, name=None):
@@ -49,7 +56,7 @@ class APIFunction(object):
     Class that will represent the callable method of the API
     """
     path = None
-    method = "POST"
+    method = "GET"
     # name for positional arguments. If more arguments are provided then there are names they are ignored.
     arg_names = []
 
@@ -74,7 +81,7 @@ class APIFunction(object):
         if json_data is not None:
             return self.api._process_json(json_data)
         
-        return self.r
+        return self.api._process_content(self.r.content)
 
     def _get_parameters(self):
         params = self.kwargs
@@ -115,6 +122,7 @@ def binder(function_class):
         return func.execute()
     _bound.__name__ = function_class.__name__
     return _bound
+
 
 def get_bind(api_cls):
     def bind(cls):
