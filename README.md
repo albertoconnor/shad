@@ -12,7 +12,7 @@ Usage
 
 Define your base API class
 
-    from shad import BaseAPI, APIFunction, bind
+    from shad import BaseAPI, APIFunction, get_bind
     
     class MyAPI(BaseAPI):
         def __init__(self, api_key, base_url="http://example.com/"):
@@ -27,6 +27,8 @@ Define your base API class
 
 Next define your end points
 
+	bind = get_bind(MyAPI)
+
     @bind
     class mycall(APIFunction):
         path = "accounts/login/"
@@ -35,7 +37,12 @@ Next define your end points
 Then a user of your wrapper can do this:
 
     api = MyAPI('THISISMYAPIKEY')
-    api.mycall(format='json')
+    r = api.mycall(format='json')
     
- 
+By default, call return insteads of the Python requests libraries response objects, which you can call `.json` on to get back json if that is what you expect.
+
+	r.json
+	{'data':'awesome'}
+	
+This breaks the paradigm of just calling function and getting back a workable response, I need to change this such that we return an object which is by default the data in json form (or xml form), and you can also get the reponse back too.
         

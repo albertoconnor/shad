@@ -1,3 +1,5 @@
+import new
+
 import requests
 
 
@@ -10,18 +12,27 @@ class BaseAPI(object):
         self.base_url = base_url
         raise NotImplemented
     
-    def update_parameters(self, params):
+    def _update_parameters(self, params):
         """
         Modify parameters with api contants like api keys.
         These parameters can override user provided parameters.
         """
         return params
     
-    def get_base_url(self):
+    def _get_base_url(self):
         """
         Modify how the base_url gets built up and returned
         """
+        if not self.base_url.endswith("/"):
+            self.base_url = self.base_url + "/"
         return self.base_url
+    
+    def _process_json(self, data):
+        """
+        data is python data structure from json, sometime they need to be
+        unwraped like a data or d key deferenced.
+        """
+        return data
 
     @classmethod
     def _register(cls, api_call, name=None):
@@ -58,9 +69,15 @@ class APIFunction(object):
                                       u'define a valid "method" attribute.')
 
         self.r = self._execute()
+        
+        json_data = self.r.json
+        if json_data is not None:
+            return self.api._process_json(json_data)
+        
+        return self.r
 
     def _get_parameters(self):
-        params = self.kwarg
+        params = self.kwargs
         
         if len(self.arg_names) > len(self.args):
             raise TypeError("%s requires %s arguments (%s given)" % (self.__class__.__name__,
@@ -70,7 +87,7 @@ class APIFunction(object):
         for name, arg in zip(self.arg_names, self.args):
             params[name] = str(arg)
         
-        self.api.update_parameters(params)
+        params = self.api._update_parameters(params)
         
         return params
         
@@ -86,7 +103,7 @@ class APIFunction(object):
     def _execute(self):
         request_method = getattr(requests, self.method.lower())
         kwargs = self._get_kwargs()
-        url = self.api.get_base_url() + self.path
+        url = self.api._get_base_url() + self.path
         return request_method(url, **kwargs)
 
 
@@ -99,10 +116,12 @@ def binder(function_class):
     _bound.__name__ = function_class.__name__
     return _bound
 
+def get_bind(api_cls):
+    def bind(cls):
+        """
+        This decorator could probably be replace with a meta class?
+        """
+        api_cls._register(binder(cls))
+        return cls
 
-def bind(cls):
-    """
-    This decorator could probably be replace with a meta class?
-    """
-    QwyrkAPI._register(binder(cls))
-    return cls
+    return bind

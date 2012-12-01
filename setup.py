@@ -9,7 +9,7 @@ packages = [
     'shad',
 ]
 
-requires = []
+requires = ['requests']
 
 setup(
     name='shad',
@@ -21,7 +21,7 @@ setup(
     url='https://bitbucket.org/amjoconn/shad',
     packages=packages,
     package_data={'': ['LICENSE', 'NOTICE']},
-    package_dir={'requests': 'shad'},
+    package_dir={},
     include_package_data=True,
     install_requires=requires,
     license='MIT',
