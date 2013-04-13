@@ -77,7 +77,7 @@ class APIFunction(object):
 
         self.r = self._execute()
         
-        json_data = self.r.json
+        json_data = self.r.json()
         if json_data is not None:
             return self.api._process_json(json_data)
         
