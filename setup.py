@@ -7,7 +7,7 @@ packages = [
     'shad',
 ]
 
-requires = ['requests']
+requires = ['requests>=1.2.0']
 
 setup(
     name='shad',
