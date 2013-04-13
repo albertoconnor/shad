@@ -3,8 +3,6 @@ try:
 except ImportError:
     from distutils.core import setup
 
-import shad
-
 packages = [
     'shad',
 ]
@@ -13,7 +11,7 @@ requires = ['requests']
 
 setup(
     name='shad',
-    version=shad.__version__,
+    version='0.1.0',
     description='Generic restful api -> Python function call adaptor',
     long_description=open('README.md').read(),
     author='Albert O\'Connor',
