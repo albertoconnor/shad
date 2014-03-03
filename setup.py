@@ -11,7 +11,7 @@ requires = ['requests>=1.2.0']
 
 setup(
     name='shad',
-    version='0.1.0',
+    version='0.1.1',
     description='Generic restful api -> Python function call adaptor',
     long_description=open('README.md').read(),
     author='Albert O\'Connor',
