@@ -18,7 +18,7 @@ setup(
     author_email='info@albertoconnor.ca',
     url='https://bitbucket.org/amjoconn/shad',
     packages=packages,
-    package_data={'': ['LICENSE', 'NOTICE']},
+    package_data={'': ['README.md', 'LICENSE', 'NOTICE']},
     package_dir={},
     include_package_data=True,
     install_requires=requires,
