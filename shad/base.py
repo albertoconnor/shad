@@ -47,7 +47,7 @@ class BaseAPI(object):
         Bind the APIFunction class as a method.
         """
         #method = new.instancemethod(api_call, None, cls)       #used for legacy Python
-        method = api_call.__get__(cls,BaseAPI)
+        method = types.MethodType(api_call, cls)
         if not name: name = api_call.__name__
         setattr(cls, name, api_call)
 
